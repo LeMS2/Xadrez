@@ -141,27 +141,37 @@ public class Board {
         return builder.build();
     }
 
+    public Iterable<Move> getAllLegalMoves() {
+        return Iterable.unmodifiableIterable(Iterable.concat(this.whitePlayer.getLegalMoves(),
+                this.blackPlayer.getLegalMoves()));
+    }
+
     public static class Builder {
 
         Map<Integer, Piece> boardConfig;
         Alliance nextMoveMaker;
+        Pawn enPassantPawn;
 
-        public Builder(){
+        public Builder() {
             this.boardConfig = new HashMap<>();
         }
 
-        public Builder setPiece(final Piece piece){
+        public Builder setPiece(final Piece piece) {
             this.boardConfig.put(piece.getPiecePosition(), piece);
             return this;
         }
 
-        public Builder setMoveMaker(final Alliance nextMoveMaker){
+        public Builder setMoveMaker(final Alliance nextMoveMaker) {
             this.nextMoveMaker = nextMoveMaker;
             return this;
         }
 
-        public Board build(){
+        public Board build() {
             return new Board(this);
+        }
+
+        public void setEnPassantPawn(Pawn enPassantPawn){
+            this.enPassantPawn = enPassantPawn;
         }
     }
 }
